@@ -145,12 +145,18 @@ def end_screen():
     win.blit(text, (WIDTH/2 - text.get_width()/2, 20))
     
     if score_user1 > score_user2:
-            final = USER_FONT.render(username1 + " WINS, " + username2 + " LOOSE", 1, GREEN)
+            win_final = USER_FONT.render(username1 + " WINS" , 1, GREEN)
+            loose_final = USER_FONT.render(username2 + " LOOSE", 1, RED)
+            win.blit(win_final, (WIDTH/2 - win_final.get_width()/2, HEIGHT/2-50))
+            win.blit(loose_final, (WIDTH/2 - loose_final.get_width()/2, HEIGHT/2+50))
     elif score_user2 > score_user1:
-            final = USER_FONT.render(username2 + " WINS, " + username1 + " LOOSE", 1, RED)
+            win_final = USER_FONT.render(username2 + " WINS" , 1, GREEN)
+            loose_final = USER_FONT.render(username1 + " LOOSE", 1, RED)
+            win.blit(win_final, (WIDTH/2 - win_final.get_width()/2, HEIGHT/2-50))
+            win.blit(loose_final, (WIDTH/2 - loose_final.get_width()/2, HEIGHT/2+50))
     else:
         final = USER_FONT.render("Series Tied!", 1, BLACK)
-    win.blit(final, (WIDTH/2 - final.get_width()/2, HEIGHT/2))
+        win.blit(final, (WIDTH/2 - final.get_width()/2, HEIGHT/2))
     pygame.display.update()
     
     if score_user1 > score_user2:
