@@ -8,6 +8,7 @@ import threading
 import time
 import tkinter as tk
 from tkinter import simpledialog
+from playsound import playsound
 
 HEADER = 32
 PORT = 5050
@@ -82,11 +83,14 @@ def draw_window(gamelist, a, c):
         if winner == 0:
             final = USER_FONT.render(username1 + " WINS, " + username2 + " LOOSE", 1, GREEN)
             score_user1 += 1
+            winning_line(a,c)
         elif winner == 1:
             final = USER_FONT.render(username2 + " WINS, " + username1 + " LOOSE", 1, BLACK)
             score_user2 += 1
+            winning_line(a,c)
+        else:
+            final = USER_FONT.render("Match Tied", 1, BLACK)
         win.blit(final, (WIDTH/2 - final.get_width()/2, HEIGHT - 50))
-        winning_line(a,c)
     else:    
         win.blit(user1, (WIDTH/4 - user1.get_width()/2, HEIGHT - 50))
         win.blit(user2, (3*WIDTH/4 - user2.get_width()/2, HEIGHT - 50))
@@ -148,7 +152,18 @@ def end_screen():
         final = USER_FONT.render("Series Tied!", 1, BLACK)
     win.blit(final, (WIDTH/2 - final.get_width()/2, HEIGHT/2))
     pygame.display.update()
-    time.sleep(5)
+    
+    if score_user1 > score_user2:
+            if username == username1:
+                playsound(os.path.join("music", "applause.wav"))
+            else:
+                playsound(os.path.join("music", "boo.wav"))
+    elif score_user2 > score_user1:
+            if username == username2:
+                playsound(os.path.join("music", "applause.wav"))
+            else:
+                playsound(os.path.join("music", "boo.wav"))
+    time.sleep(2)
 
 def game():
     global current_user, gamelist, winner, end, self_no, score_user1, score_user2, username1, username2, disconnected_check
@@ -163,6 +178,12 @@ def game():
     a,b,c = (0,0,0)
     while run: 
         clock.tick(FPS)
+        for char in gamelist:
+            if char == "-":
+                end = False
+                break
+            else:
+                end = True
         if disconnected_check:
             end_screen()
             pygame.quit()
@@ -200,6 +221,12 @@ def game():
                                 send(gamelist, True)
                         counter +=1
         if end == True:
+            if end == True:
+                if end == True:
+                    if winner == self_no:
+                        playsound(os.path.join("music", "explosion.wav"))
+                    else:
+                        playsound(os.path.join("music", "crying.wav"))
             time.sleep(2)
             end = False
             gamelist = ["-", "-", "-","-", "-", "-","-", "-", "-"]
